@@ -1,45 +1,10 @@
+#include <time.h>
 #include "observer.h"
 
-class FireObserver : public Observer
-{
-public:
-	void Update( Subject* theChangedSubject ) { UpdateFire( theChangedSubject ); }
-	virtual void UpdateFire( Subject* theChangedSubject ) = 0;
+class FireEvent { };
+class PowerFailureEvent { };
 
-private:
-};
-
-class PowerFailureObserver : public Observer
-{
-public:
-	void Update( Subject* theChangedSubject ) { UpdatePowerFailure( theChangedSubject ); }
-	virtual void UpdatePowerFailure( Subject* theChangedSubject ) = 0;
-
-private:
-};
-
-
-class FireEvent : public Subject
-{
-public:
-	void AttachFireEvent( FireObserver* o )	{ Attach( o ); };
-	void DetachFireEvent( FireObserver* o )	{ Detach( o ); };
-
-protected:
-	void NotifyFire()						{ Notify(); };
-};
-
-class PowerFailureEvent : public Subject
-{
-public:
-	void AttachPowerFailure( PowerFailureObserver* o )	{ Attach( o ); };
-	void DetachPowerFailure( PowerFailureObserver* o )	{ Detach( o ); };
-
-protected:
-	void NotifyPowerFailure()							{ Notify(); };
-};
-
-class LegoPark : public FireEvent, public PowerFailureEvent
+class LegoPark : public Subject<FireEvent>, public Subject<PowerFailureEvent>
 {
 public:
 	void Tick();
@@ -47,27 +12,27 @@ public:
 private:
 };
 
-class FireDepartment : public FireObserver
+class FireDepartment : public Observer <FireEvent>
 {
 public:
-	void UpdateFire( Subject* theChangedSubject );
+	void Update( Subject<FireEvent>* theChangedSubject );
 
 private:
 };
 
-class PowerFailure : public PowerFailureObserver
+class PowerFailure : public Observer<PowerFailureEvent>
 {
 public:
-	void UpdatePowerFailure( Subject* theChangedSubject );
+	void Update( Subject<PowerFailureEvent>* theChangedSubject );
 
 private:
 };
 
-class Supervisor : public FireObserver, public PowerFailureObserver
+class Supervisor : public Observer <FireEvent>, public Observer<PowerFailureEvent>
 {
 public:
-	void UpdateFire( Subject* theChangedSubject );
-	void UpdatePowerFailure( Subject* theChangedSubject );
+	void Update( Subject<FireEvent>* theChangedSubject );
+	void Update( Subject<PowerFailureEvent>* theChangedSubject );
 
 private:
 };

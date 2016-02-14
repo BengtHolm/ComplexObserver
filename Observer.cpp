@@ -8,27 +8,28 @@
 int main()
 {
 	LegoPark		legoland;
+	
 	FireDepartment	fire;
 	Supervisor		manager;
 	PowerFailure	electrician;
 
-	legoland.AttachFireEvent( &fire );
-	legoland.AttachFireEvent( &manager );
-	legoland.AttachPowerFailure( &manager );
-	legoland.AttachPowerFailure( &electrician );
+	legoland.Subject<FireEvent>::Attach( &fire );
+	legoland.Subject<FireEvent>::Attach( &manager );
+	legoland.Subject<PowerFailureEvent>::Attach( &manager );
+	legoland.Subject<PowerFailureEvent>::Attach( &electrician );
 
 	for( int i=0; i<100; i++ )
 	{
 		legoland.Tick();
-		std::cout << "." << std::endl;
-
-		usleep( 2000 );
+		std::cout << "." << std::endl;		
+		
+		Sleep( 100 );
 	}
 	
-	legoland.DetachFireEvent( &fire );
-	legoland.DetachFireEvent( &manager );
-	legoland.DetachPowerFailure( &manager );
-	legoland.DetachPowerFailure( &electrician );
+	legoland.Subject<FireEvent>::Detach( &fire );
+	legoland.Subject<FireEvent>::Detach( &manager );
+	legoland.Subject<PowerFailureEvent>::Detach( &manager );
+	legoland.Subject<PowerFailureEvent>::Detach( &electrician );
 
 	return 0;
 }

@@ -9,31 +9,31 @@ void LegoPark::Tick()
 	rr = 10000*((double) rand() / (RAND_MAX));
 	if( rr < 500 )
 	{
-		NotifyFire();
+		Subject<FireEvent>::Notify();
 	}
 
 	if( rr < 1000 )
 	{
-		NotifyPowerFailure();
+		Subject<PowerFailureEvent>::Notify();
 	}
 }
 
-void FireDepartment::UpdateFire( Subject* theChangedSubject )
+void FireDepartment::Update( Subject<FireEvent>* theChangedSubject )
 {
 	std::cout << "Ingen panik, ilden er under kontrol!" << std::endl;
 }
 
-void PowerFailure::UpdatePowerFailure( Subject* theChangedSubject )
+void PowerFailure::Update( Subject<PowerFailureEvent>* theChangedSubject )
 {
 	std::cout << "Jeg kommer med det samme!" << std::endl;
 }
 
-void Supervisor::UpdateFire( Subject* theChangedSubject )
+void Supervisor::Update( Subject<FireEvent>* theChangedSubject )
 {
 	std::cout << "Vi beklager, kom igen en anden gang" << std::endl;
 }
 
-void Supervisor::UpdatePowerFailure( Subject* theChangedSubject )
+void Supervisor::Update( Subject<PowerFailureEvent>* theChangedSubject )
 {
 	std::cout << "Vi beklager, kom igen når der er lyst" << std::endl;
 }
