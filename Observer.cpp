@@ -10,22 +10,25 @@ int main()
 	LegoPark		legoland;
 	FireDepartment	fire;
 	Supervisor		manager;
+	PowerFailure	electrician;
 
-	legoland.Attach( &fire );
-	legoland.Attach( &manager );
+	legoland.AttachFireEvent( &fire );
+	legoland.AttachFireEvent( &manager );
+	legoland.AttachPowerFailure( &manager );
+	legoland.AttachPowerFailure( &electrician );
 
-	for( int i=0; i<1000; i++ )
+	for( int i=0; i<100; i++ )
 	{
 		legoland.Tick();
 		std::cout << "." << std::endl;
 
 		usleep( 2000 );
 	}
-
-	legoland.Detach( &fire );
-	legoland.Detach( &manager );
+	
+	legoland.DetachFireEvent( &fire );
+	legoland.DetachFireEvent( &manager );
+	legoland.DetachPowerFailure( &manager );
+	legoland.DetachPowerFailure( &electrician );
 
 	return 0;
 }
-
-
